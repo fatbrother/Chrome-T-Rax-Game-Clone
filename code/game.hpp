@@ -42,7 +42,6 @@ private:
 inline Game::Game()
 {
     window = std::make_shared<sf::RenderWindow>(sf::VideoMode(1800, 450), "T-Rex");
-    // window = new sf::RenderWindow(sf::VideoMode(1800, 450), "Dinosour");
     view.setCenter(300, 70);
     view.setSize(600, 200);
     window->setView(view);
