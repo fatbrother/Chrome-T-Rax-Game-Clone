@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 #include <SFML/Graphics.hpp>
 #include "entity.hpp"
+#include "context.hpp"
 
 class ObstBase : public Entity
 {
@@ -49,7 +50,7 @@ inline Bird::Bird()
     skins.push_back(tmp);
     type = false;
     object.setTexture(skins[type]);
-    object.setPosition(600, hight[rand() % 3]);
+    object.setPosition(600, hight[context.getRandom(0, 3)]);
     setHitbox(object);
     speed = 220 + rand() % 41;
     pastTime = 0;
@@ -152,11 +153,12 @@ inline void Obst::update(float time, float level)
         i->update(time, level);
     if (obstOnStand.size() > 0 && obstOnStand.front()->isDelete())
         obstOnStand.pop_front();
-    if ((lastDis > minLastDis && rand() % 300 == 0) || lastDis > maxLastDis)
+        
+    if ((lastDis > minLastDis && context.getRandom(0, 300) == 0) || lastDis > maxLastDis)
     {
         bool type;
         if (sameObstTypeCnt > maxSameTypeTimes)
-            type = !lastType, sameObstTypeCnt = 1;
+            type = !lastType;
         else
             type = rand() % 2;
 
@@ -168,7 +170,7 @@ inline void Obst::update(float time, float level)
         switch (type)
         {
         case 0:
-            obstOnStand.push_back(new Cactus(cactusSkin[rand() % cactusSkin.size()]));
+            obstOnStand.push_back(new Cactus(cactusSkin[context.getRandom(0, int(cactusSkin.size()))]));
             break;
         case 1:
             obstOnStand.push_back(new Bird());

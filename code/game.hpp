@@ -34,7 +34,7 @@ private:
     void render();
     void reset();
     void update(float);
-    void FPStest(sf::Clock &);
+    void FPStest(float);
     void startScene();
     void processEvents();
 };
@@ -53,7 +53,6 @@ inline Game::Game()
     gameOver.setTexture(gameOverTexture);
     gameOver.setPosition(205, 40);
     isUpdate = true;
-    srand(time(0));
 }
 
 inline void Game::run()
@@ -62,10 +61,11 @@ inline void Game::run()
     clock.restart();
     while (window->isOpen())
     {
-        // FPStest(clock);
         processEvents();
         if (isUpdate)
         {
+            // std::thread t1(&Game::FPStest, this, clock.getElapsedTime().asSeconds());
+            // t1.detach();
             update(clock.restart().asSeconds());
             render();
         }
@@ -187,8 +187,7 @@ inline void Game::update(float time)
         std::thread(&Obst::update, &obst, time, level),
         std::thread(&PtClr::update, &ptclr, time),
         std::thread(&Trex::update, &trex, time),
-        std::thread(&Ground::update, &ground, time, level)  
-    };
+        std::thread(&Ground::update, &ground, time, level)};
 
     for (int i = 0; i < 5; i++)
         threads[i].join();
@@ -209,15 +208,18 @@ inline void Game::draw()
     }
 }
 
-inline void Game::FPStest(sf::Clock &clock)
+inline void Game::FPStest(float time)
 {
     static float pastTime = 0;
     static int cnt = 0;
+    static std::mutex mutex;
 
-    pastTime += clock.getElapsedTime().asSeconds(), cnt++;
-    if (pastTime > 1.f)
+    pastTime += time, cnt++;
+    if (pastTime >= 1.f)
     {
+        mutex.lock();
         std::cout << cnt << std::endl;
+        mutex.unlock();
         pastTime -= 1.f;
         cnt = 0;
     }
