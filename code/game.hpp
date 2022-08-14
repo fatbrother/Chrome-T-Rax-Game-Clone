@@ -34,7 +34,6 @@ private:
     void render();
     void reset();
     void update(float);
-    void FPStest(float);
     void startScene();
     void processEvents();
 };
@@ -63,8 +62,8 @@ inline void Game::run()
         processEvents();
         if (isUpdate)
         {
-            // std::thread t1(&Game::FPStest, this, clock.getElapsedTime().asSeconds());
-            // t1.detach();
+            std::thread t1(&Context::FPStest, &context, clock.getElapsedTime().asSeconds());
+            t1.detach();
             update(clock.restart().asSeconds());
             render();
         }
@@ -204,23 +203,6 @@ inline void Game::draw()
     {
         window->draw(againBotton);
         window->draw(gameOver);
-    }
-}
-
-inline void Game::FPStest(float time)
-{
-    static float pastTime = 0;
-    static int cnt = 0;
-    static std::mutex mutex;
-
-    pastTime += time, cnt++;
-    if (pastTime >= 1.f)
-    {
-        mutex.lock();
-        std::cout << cnt << std::endl;
-        mutex.unlock();
-        pastTime -= 1.f;
-        cnt = 0;
     }
 }
 
