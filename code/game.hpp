@@ -62,7 +62,7 @@ inline void Game::run()
         processEvents();
         if (isUpdate)
         {
-            std::thread t1(&Context::FPStest, &context, clock.getElapsedTime().asSeconds());
+            // std::thread t1(&Context::FPStest, &context, clock.getElapsedTime().asSeconds());
             t1.detach();
             update(clock.restart().asSeconds());
             render();
