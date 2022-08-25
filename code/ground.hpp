@@ -11,7 +11,6 @@ public:
 
 private:
     bool type;
-    int speed;
     std::vector<sf::Sprite> horiz;
     std::vector<sf::Texture> terrain;
 };
@@ -19,7 +18,6 @@ private:
 inline Ground::Ground()
 {
     type = 0;
-    speed = 240;
     terrain.resize(2);
     terrain[0].loadFromFile("material.png", sf::IntRect(2, 54, 600, 12));
     terrain[1].loadFromFile("material.png", sf::IntRect(602, 54, 1200, 12));
@@ -31,7 +29,7 @@ inline Ground::Ground()
 
 inline void Ground::update(float time, float level)
 {
-    float dx = -(time * (speed + 30 * level));
+    float dx = -(time * (SPEED + 30 * level));
     horiz[0].move(dx, 0);
     horiz[1].move(dx, 0);
     if (horiz[type].getPosition().x <= -600)

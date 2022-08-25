@@ -1,17 +1,13 @@
 #include <SFML/Graphics.hpp>
+#include "settings.hpp"
 #include "entity.hpp"
-
-#define DIE -1
-#define RUN 0
-#define JUMP 1
-#define SHIFT 2
 
 class Trex : public Entity
 {
 public:
     Trex();
     void sentOrder(int);
-    void update(float );
+    void update(float);
     void draw(std::shared_ptr<sf::RenderWindow>);
     void reset();
 
@@ -101,7 +97,8 @@ inline void Trex::update(float time)
 inline void Trex::draw(std::shared_ptr<sf::RenderWindow> window)
 {
     window->draw(object);
-    // drawHitbox(window);
+    if (SHOW_HITBOX)
+        drawHitbox(window);
 }
 
 inline void Trex::reset()
@@ -119,6 +116,8 @@ inline void Trex::setType()
     {
     case DIE:
         object.setTexture(dead, true);
+        if (object.getPosition().y >= 105)
+            object.setPosition(0, 105);
         break;
     case RUN:
         gravity = 0;
@@ -128,8 +127,8 @@ inline void Trex::setType()
         setHitbox(object);
         break;
     case JUMP:
-        velocityDown = -500;
-        gravity = 1300;
+        velocityDown = JUMP_SPEED;
+        gravity = GRAVITY;
         object.setTexture(jump, true);
         setHitbox(object);
         break;
@@ -141,11 +140,7 @@ inline void Trex::setType()
     }
 }
 
-inline void Trex::updateDie()
-{
-    if (object.getPosition().y >= 105)
-        object.setPosition(0, 105);
-}
+inline void Trex::updateDie() {}
 
 inline void Trex::updateShift(float time)
 {

@@ -1,13 +1,9 @@
+#include "settings.hpp"
 #include "ground.hpp"
 #include "cloud.hpp"
 #include "ptclr.hpp"
 #include "obst.hpp"
 #include "trex.hpp"
-
-#define DIE -1
-#define RUN 0
-#define JUMP 1
-#define SHIFT 2
 
 class Game
 {
@@ -62,9 +58,12 @@ inline void Game::run()
         processEvents();
         if (isUpdate)
         {
-            // std::thread t1(&Context::FPStest, &context, clock.getElapsedTime().asSeconds());
-            t1.detach();
-            update(clock.restart().asSeconds());
+            if (SHOW_FPS)
+            {
+                std::thread t1(&Context::FPStest, &context, clock.getElapsedTime().asSeconds());
+                t1.detach();
+            }
+            update(clock.restart().asSeconds() * LEVEL);
             render();
         }
     }
@@ -177,6 +176,7 @@ inline void Game::update(float time)
     {
         trex.sentOrder(DIE);
         isUpdate = false;
+        return;
     }
     float level = ptclr.getLevel();
 

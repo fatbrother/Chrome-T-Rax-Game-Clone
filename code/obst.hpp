@@ -1,5 +1,6 @@
 #include <bits/stdc++.h>
 #include <SFML/Graphics.hpp>
+#include "settings.hpp"
 #include "entity.hpp"
 #include "context.hpp"
 
@@ -18,7 +19,8 @@ protected:
 inline void ObstBase::draw(std::shared_ptr<sf::RenderWindow> window)
 {
     window->draw(object);
-    // drawHitbox(window);
+    if (SHOW_HITBOX)
+        drawHitbox(window);
 }
 
 inline bool ObstBase::isDelete()
@@ -52,7 +54,7 @@ inline Bird::Bird()
     object.setTexture(skins[type]);
     object.setPosition(600, hight[context.getRandom(0, 3)]);
     setHitbox(object);
-    speed = 220 + rand() % 41;
+    speed = (SPEED - 20) + context.getRandom(0, 40);
     pastTime = 0;
 }
 
@@ -78,7 +80,7 @@ public:
 
 inline Cactus::Cactus(sf::Texture &texture)
 {
-    speed = 240;
+    speed = SPEED;
     object.setTexture(texture);
     object.setPosition(600, 150 - object.getTextureRect().height);
     setHitbox(object);
@@ -137,7 +139,7 @@ inline Obst::Obst()
         cactusSkin.push_back(tmp);
     }
 
-    speed = 240;
+    speed = SPEED;
     sameObstTypeCnt = 4;
     maxSameTypeTimes = 3;
     minLastDis = 300;

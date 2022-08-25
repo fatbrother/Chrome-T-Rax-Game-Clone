@@ -1,5 +1,6 @@
 #include <bits/stdc++.h>
 #include <SFML/Graphics.hpp>
+#include "settings.hpp"
 
 class Cloud
 {
@@ -9,7 +10,6 @@ public:
     void draw(std::shared_ptr<sf::RenderWindow>);
 
 private:
-    int speed;
     int lastCloud;
     sf::Texture cloudPaint;
     std::vector<sf::Sprite> clouds;
@@ -27,7 +27,6 @@ inline Cloud::Cloud()
         last += rand() % 300;
         clouds.back().setPosition(last, 20 + rand() % 50);
     }
-    speed = 60;
     lastCloud = 4;
 }
 
@@ -35,7 +34,7 @@ inline void Cloud::update(float time, float level)
 {
     for (int i = 0; i < 5; i++)
     {
-        clouds[i].move(-(time * (speed + 30 * level)), 0);
+        clouds[i].move(-(time * ((SPEED / 3) + 30 * level)), 0);
         if (clouds[i].getPosition().x < -46)
         {
             float lastSite = clouds[lastCloud].getPosition().x;
