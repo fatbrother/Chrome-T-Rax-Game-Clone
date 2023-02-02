@@ -4,6 +4,7 @@
 #include "ptclr.hpp"
 #include "obst.hpp"
 #include "trex.hpp"
+#include "againButton.hpp"
 
 class Game
 {
@@ -21,8 +22,7 @@ private:
     sf::View view;
     sf::Clock clock;
     sf::Sprite gameOver;
-    sf::Sprite againBotton;
-    sf::Texture bottomTexture;
+    AgainButton againButton;
     sf::Texture gameOverTexture;
     std::shared_ptr<sf::RenderWindow> window;
 
@@ -40,9 +40,6 @@ inline Game::Game()
     view.setCenter(300, 70);
     view.setSize(600, 200);
     window->setView(view);
-    bottomTexture.loadFromFile("material.png", sf::IntRect(2, 2, 36, 36));
-    againBotton.setTexture(bottomTexture);
-    againBotton.setPosition(282, 60);
     gameOverTexture.loadFromFile("material.png", sf::IntRect(655, 15, 191, 11));
     gameOver.setTexture(gameOverTexture);
     gameOver.setPosition(205, 40);
@@ -148,10 +145,7 @@ inline void Game::processEvents()
         case sf::Event::EventType::MouseButtonPressed:
             if (event.mouseButton.button == sf::Mouse::Left && !isUpdate)
             {
-                if (event.mouseButton.x < 950 &&
-                    event.mouseButton.x > 850 &&
-                    event.mouseButton.y < 270 &&
-                    event.mouseButton.y > 205)
+                if (againButton.isClicked({event.mouseButton.x, event.mouseButton.y}))
                     reset();
             }
         default:
@@ -201,7 +195,7 @@ inline void Game::draw()
 
     if (!isUpdate)
     {
-        window->draw(againBotton);
+        againButton.draw(window);
         window->draw(gameOver);
     }
 }

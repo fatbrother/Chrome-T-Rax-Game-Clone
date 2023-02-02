@@ -1,0 +1,9 @@
+.vscode/
+
+*.dll
+
+*.exe
+
+*.ini
+
+*ico
