@@ -1,0 +1,3 @@
+/home/fatbrother/Desktop/Little-Dino-With-Cplusplus/build/CMakeFiles/main.dir
+/home/fatbrother/Desktop/Little-Dino-With-Cplusplus/build/CMakeFiles/edit_cache.dir
+/home/fatbrother/Desktop/Little-Dino-With-Cplusplus/build/CMakeFiles/rebuild_cache.dir
